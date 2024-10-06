@@ -33,11 +33,10 @@ namespace api.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Quantity = table.Column<decimal>(type: "decimal(5,3)", nullable: false),
+                    Quantity = table.Column<decimal>(type: "decimal(10,3)", nullable: false),
                     MeasurementUnit = table.Column<int>(type: "int", nullable: false),
                     IsPurchased = table.Column<bool>(type: "bit", nullable: false),
-                    FoodType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ListId = table.Column<int>(type: "int", nullable: true),
+                    FoodType = table.Column<int>(type: "int", nullable: false),
                     ShoppingListId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

@@ -12,7 +12,7 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241006105316_Init")]
+    [Migration("20241006115057_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -33,15 +33,11 @@ namespace api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("FoodType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("FoodType")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsPurchased")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("ListId")
-                        .HasColumnType("int");
 
                     b.Property<int>("MeasurementUnit")
                         .HasColumnType("int");
@@ -51,7 +47,7 @@ namespace api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(5,3)");
+                        .HasColumnType("decimal(10,3)");
 
                     b.Property<int?>("ShoppingListId")
                         .HasColumnType("int");
