@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.ShoppingList;
+using api.Interfaces;
 using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,10 @@ namespace api.Controllers
     public class ShoppingListController : ControllerBase
 
     {
-        private readonly ApplicationDBContext _context;
-        public ShoppingListController(ApplicationDBContext context)
+        private readonly IShoppingListRepository _shoppingListRepository;
+        public ShoppingListController(IShoppingListRepository shoppingListRepository)
         {
-          _context = context; 
+          _shoppingListRepository = shoppingListRepository; 
         }
 
         [HttpGet]
@@ -28,7 +29,7 @@ namespace api.Controllers
         public async Task<IActionResult> GetAll()
         {
           // var shoppingLists = _context.ShoppingLists.ToList()
-          var shoppingLists = await _context.ShoppingLists.ToListAsync();
+          var shoppingLists = await _shoppingListRepository.GetAllAsync();
 
           var shoppingListDto = shoppingLists.Select(s => s.ToShoppingListDto());
 
@@ -39,7 +40,7 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-          var shoppingList = await _context.ShoppingLists.FindAsync(id);
+          var shoppingList = await _shoppingListRepository.GetByIdAsync(id);
 
           if (shoppingList == null) return NotFound();
           
@@ -52,8 +53,7 @@ namespace api.Controllers
 
           var shoppingListModel = ShoppingListDto.ToShoppingListFromCreateDto(); 
 
-          await _context.ShoppingLists.AddAsync(shoppingListModel);
-          await _context.SaveChangesAsync();
+          await _shoppingListRepository.CreateAsync(shoppingListModel);
 
           return CreatedAtAction(nameof(GetById), new { id = shoppingListModel.Id }, shoppingListModel.ToShoppingListDto()); 
 
@@ -61,17 +61,11 @@ namespace api.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateShoppingListRequestDto ShoppingListDto){
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateShoppingListRequestDto shoppingListDto){
 
-          var shoppingListModel = await _context.ShoppingLists.FirstOrDefaultAsync(x => x.Id == id); 
+          var shoppingListModel = await _shoppingListRepository.UpdateAsync(id, shoppingListDto); 
 
           if (shoppingListModel == null) return NotFound(); 
-
-
-          shoppingListModel.Name = ShoppingListDto.Name; 
-          shoppingListModel.IsPurchased = ShoppingListDto.IsPurchased; 
-
-          await _context.SaveChangesAsync();
 
           return Ok(shoppingListModel.ToShoppingListDto()); 
 
@@ -82,13 +76,9 @@ namespace api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete ([FromRoute] int id){
 
-          var shoppingListModel = await _context.ShoppingLists.FirstOrDefaultAsync(x => x.Id == id); 
+          var shoppingListModel = await _shoppingListRepository.DeleteAsync(id); 
 
           if (shoppingListModel == null) return NotFound(); 
-
-          _context.ShoppingLists.Remove(shoppingListModel);
-          
-          await _context.SaveChangesAsync();
 
           return Ok(shoppingListModel.ToShoppingListDto()); 
 
