@@ -20,5 +20,17 @@ namespace api.Mappers
           }; 
 
         }
+
+
+        public static ShoppingList ToShoppingListFromCreateDto(this CreateShoppingListRequestDto createShoppingListDto) {
+
+          return new ShoppingList 
+          {
+            Name = createShoppingListDto.Name ,   
+            IsPurchased = createShoppingListDto.IsPurchased , 
+            CreatedOn = createShoppingListDto.CreatedOn 
+          }; 
+
+        }
     }
 }
