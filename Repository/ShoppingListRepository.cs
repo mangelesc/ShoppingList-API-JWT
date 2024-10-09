@@ -24,9 +24,9 @@ namespace api.Repository
     // ----
 
 
-    public Task<List<ShoppingList>> GetAllAsync()
+    public async Task<List<ShoppingList>> GetAllAsync()
     {
-      return _context.ShoppingLists.ToListAsync();
+      return await _context.ShoppingLists.ToListAsync();
     }
 
 
@@ -78,17 +78,17 @@ namespace api.Repository
     {
       var shoppingListModel = await _context.ShoppingLists.FirstOrDefaultAsync (x => x.Id == id); 
 
-          if (shoppingListModel == null)
-            {
-              return null;
-            }
+      if (shoppingListModel == null)
+        {
+          return null;
+        }
 
-          shoppingListModel.Name = ShoppingListDto.Name; 
-          shoppingListModel.IsPurchased = ShoppingListDto.IsPurchased; 
+      shoppingListModel.Name = ShoppingListDto.Name; 
+      shoppingListModel.IsPurchased = ShoppingListDto.IsPurchased; 
 
-          await _context.SaveChangesAsync();
+      await _context.SaveChangesAsync();
 
-          return shoppingListModel;
+      return shoppingListModel;
     }
 
 
@@ -96,10 +96,10 @@ namespace api.Repository
     {
       var ShoppingListModel = await _context.ShoppingLists.FirstOrDefaultAsync (x => x.Id == id); 
 
-          if (ShoppingListModel == null)
-            {
-              return null;
-            }
+      if (ShoppingListModel == null)
+        {
+          return null;
+        }
 
       _context.ShoppingLists.Remove(ShoppingListModel); 
           
