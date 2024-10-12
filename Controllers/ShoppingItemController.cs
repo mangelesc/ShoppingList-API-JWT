@@ -15,16 +15,20 @@ namespace api.Controllers
     public class ShoppingItemController : ControllerBase
     {
         private readonly IShoppingItemRepository _shoppingItemRepository;
-        public ShoppingItemController(IShoppingItemRepository shoppingItemRepository)
+        private readonly IShoppingListRepository _shoppingListRepository;
+
+        public ShoppingItemController(IShoppingItemRepository shoppingItemRepository, IShoppingListRepository shoppingListRepository)
         {
           _shoppingItemRepository = shoppingItemRepository; 
+          _shoppingListRepository = shoppingListRepository;
         }
+
 
         [HttpGet]
         // public IActionResult GetAll()
         public async Task<IActionResult> GetAll()
         {
-          // var shoppingItems = _context.ShoppingItems.ToItem()
+          
           var shoppingItems = await _shoppingItemRepository.GetAllAsync();
 
           var shoppingItemDto = shoppingItems.Select(s => s.ToShoppingItemDto());
@@ -44,10 +48,12 @@ namespace api.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateShoppingItemRequestDto ShoppingItemDto){
+        [HttpPost("{listId}")]
+        public async Task<IActionResult> Create([FromRoute] int listId, [FromBody] CreateShoppingItemRequestDto ShoppingItemDto){
 
-          var shoppingItemModel = ShoppingItemDto.ToShoppingItemFromCreateDto(); 
+          if (!await _shoppingListRepository.ShoppingListExists(listId)) return BadRequest("Shopping List does not exist");
+          
+          var shoppingItemModel = ShoppingItemDto.ToShoppingItemFromCreateDto(listId); 
 
           await _shoppingItemRepository.CreateAsync(shoppingItemModel);
 
@@ -61,7 +67,7 @@ namespace api.Controllers
 
           var shoppingItemModel = await _shoppingItemRepository.UpdateAsync(id, shoppingItemDto); 
 
-          if (shoppingItemModel == null) return NotFound(); 
+          if (shoppingItemModel == null) return NotFound("Shopping Item not found"); 
 
           return Ok(shoppingItemModel.ToShoppingItemDto()); 
 

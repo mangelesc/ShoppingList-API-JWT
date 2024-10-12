@@ -9,6 +9,6 @@ namespace api.Dtos.ShoppingList
     {
         public string Name { get; set; } = string.Empty;   
         public bool IsPurchased { get; set; }
-        public DateTime CreatedOn { get; set; } = DateTime.Now;
+        // public DateTime CreatedOn { get; set; } = DateTime.Now;
     }
 }

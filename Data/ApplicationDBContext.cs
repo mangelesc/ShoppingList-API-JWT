@@ -10,10 +10,10 @@ namespace api.Data
     public class ApplicationDBContext : DbContext
     {
         public ApplicationDBContext(DbContextOptions dbContextOptions)
-        : base(dbContextOptions)
-        {
-        
-        }
+          : base(dbContextOptions)
+          {
+          
+          }
 
         public DbSet<ShoppingList> ShoppingLists { get; set; } 
         public DbSet<ShoppingItem> ShoppingItems { get; set; }

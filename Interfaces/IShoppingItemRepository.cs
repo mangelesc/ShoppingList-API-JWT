@@ -14,5 +14,6 @@ namespace api.Interfaces
         Task<ShoppingItem> CreateAsync(ShoppingItem ShoppingItemModel); 
         Task<ShoppingItem?> UpdateAsync (int id, UpdateShoppingItemRequestDto ShoppingItemDto); 
         Task<ShoppingItem?> DeleteAsync (int id); 
-    }
+        Task<bool> ListExist(int id);
+  }
 }

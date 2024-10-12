@@ -19,13 +19,13 @@ namespace api.Mappers
             MeasurementUnit = ShoppingItemModel.MeasurementUnit , 
             IsPurchased = ShoppingItemModel.IsPurchased , 
             FoodType = ShoppingItemModel.FoodType , 
-            // ShoppingListId = ShoppingItemModel.ShoppingListId , 
+            ShoppingListId = ShoppingItemModel.ShoppingListId , 
           }; 
 
         }
 
 
-        public static ShoppingItem ToShoppingItemFromCreateDto(this CreateShoppingItemRequestDto createShoppingItemDto) {
+        public static ShoppingItem ToShoppingItemFromCreateDto(this CreateShoppingItemRequestDto createShoppingItemDto, int shoppingListId) {
 
           return new ShoppingItem 
           {
@@ -34,7 +34,21 @@ namespace api.Mappers
             MeasurementUnit = createShoppingItemDto.MeasurementUnit , 
             IsPurchased = createShoppingItemDto.IsPurchased , 
             FoodType = createShoppingItemDto.FoodType , 
-            // ShoppingListId = createShoppingItemDto.ShoppingListId ,
+            ShoppingListId = shoppingListId ,
+          }; 
+
+        }
+
+        public static ShoppingItem ToShoppingItemFromUpdateDto(this UpdateShoppingItemRequestDto updateShoppingItemDto) {
+
+          return new ShoppingItem 
+          {
+            Name = updateShoppingItemDto.Name ,   
+            Quantity = updateShoppingItemDto.Quantity , 
+            MeasurementUnit = updateShoppingItemDto.MeasurementUnit , 
+            IsPurchased = updateShoppingItemDto.IsPurchased , 
+            FoodType = updateShoppingItemDto.FoodType , 
+            // ShoppingListId = shoppingListId ,
           }; 
 
         }

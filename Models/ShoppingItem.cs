@@ -49,6 +49,8 @@ namespace api.Models
 
         // Foreign Key
         public int? ShoppingListId { get; set; }
+
+        // Navigation property
         public ShoppingList? ShoppingList { get; set; }
 
         

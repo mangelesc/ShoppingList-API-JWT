@@ -16,7 +16,7 @@ namespace api.Dtos.ShoppingItem
         public FoodType FoodType { get; set; }
 
         // Foreign Key
-        // public int? ShoppingListId { get; set; }
+        public int? ShoppingListId { get; set; }
         // public ShoppingList? ShoppingList { get; set; }
     }
 }

@@ -16,7 +16,8 @@ namespace api.Mappers
             Id = shoppingListModel.Id , 
             Name = shoppingListModel.Name ,   
             IsPurchased = shoppingListModel.IsPurchased , 
-            CreatedOn = shoppingListModel.CreatedOn 
+            CreatedOn = shoppingListModel.CreatedOn, 
+            Items = shoppingListModel.Items.Select(i => i.ToShoppingItemDto()).ToList()
           }; 
 
         }
@@ -28,7 +29,7 @@ namespace api.Mappers
           {
             Name = createShoppingListDto.Name ,   
             IsPurchased = createShoppingListDto.IsPurchased , 
-            CreatedOn = createShoppingListDto.CreatedOn 
+            // CreatedOn = createShoppingListDto.CreatedOn 
           }; 
 
         }

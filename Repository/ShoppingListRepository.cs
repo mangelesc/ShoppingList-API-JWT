@@ -26,7 +26,10 @@ namespace api.Repository
 
     public async Task<List<ShoppingList>> GetAllAsync()
     {
-      return await _context.ShoppingLists.ToListAsync();
+      return await _context.ShoppingLists
+        // include to get the items
+        .Include(i => i.Items)
+        .ToListAsync();
     }
 
 
@@ -61,7 +64,7 @@ namespace api.Repository
     public async Task<ShoppingList?> GetByIdAsync(int id)
     {
       return await _context.ShoppingLists
-        // .Include(c => c.Comments)
+        .Include(l => l.Items)
         .FirstOrDefaultAsync(x => x.Id == id); 
     }
 

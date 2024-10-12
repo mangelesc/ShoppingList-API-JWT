@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.ShoppingItem;
 using api.Interfaces;
+using api.Mappers;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +16,7 @@ namespace api.Repository
 
     private readonly ApplicationDBContext _context;
 
-    public ShoppingItemRepository(ApplicationDBContext context)
+    public ShoppingItemRepository (ApplicationDBContext context)
         {
           _context = context; 
         }
@@ -27,14 +28,6 @@ namespace api.Repository
     }
 
 
-    public async Task<ShoppingItem> CreateAsync(ShoppingItem ShoppingItemModel)
-    {
-      await _context.ShoppingItems.AddAsync(ShoppingItemModel); 
-      await _context.SaveChangesAsync();
-      return ShoppingItemModel; 
-    }
-
-
     public async Task<ShoppingItem?> GetByIdAsync(int id)
     {
       return await _context.ShoppingItems
@@ -43,37 +36,46 @@ namespace api.Repository
     }
 
 
-    public async Task<ShoppingItem?> UpdateAsync(int id, UpdateShoppingItemRequestDto ShoppingItemDto)
+    public async Task<ShoppingItem> CreateAsync(ShoppingItem ShoppingItemModel)
     {
-      var shoppingItemModel = await _context.ShoppingItems.FirstOrDefaultAsync (x => x.Id == id); 
+      await _context.ShoppingItems.AddAsync(ShoppingItemModel); 
+      await _context.SaveChangesAsync();
+      return ShoppingItemModel; 
+    }
 
-      if (shoppingItemModel == null)
-        {
-          return null;
-        }
 
-      shoppingItemModel.Name = ShoppingItemDto.Name ;   
-      shoppingItemModel.Quantity = ShoppingItemDto.Quantity ; 
-      shoppingItemModel.MeasurementUnit = ShoppingItemDto.MeasurementUnit ; 
-      shoppingItemModel.IsPurchased = ShoppingItemDto.IsPurchased ; 
-      shoppingItemModel.FoodType = ShoppingItemDto.FoodType ; 
-      // shoppingItemModel.ShoppingListId = ShoppingItemDto.ShoppingListId ;
-      shoppingItemModel.Name = ShoppingItemDto.Name;  
+    // public Task<ShoppingItem?> UpdateAsync(int id, UpdateShoppingItemRequestDto ShoppingItemDto)
+    // {
+    //   throw new NotImplementedException();
+    // }
+
+    public async Task<ShoppingItem?> UpdateAsync(int id, UpdateShoppingItemRequestDto shoppingItemModel)
+    {
+
+      var ExistingShoppingItem = await _context.ShoppingItems.FindAsync (id); 
+
+      if (ExistingShoppingItem == null) return null;
+
+      var shoppingItem = shoppingItemModel.ToShoppingItemFromUpdateDto();
+
+      ExistingShoppingItem.Name = shoppingItem.Name ;   
+      ExistingShoppingItem.Quantity = shoppingItem.Quantity ; 
+      ExistingShoppingItem.MeasurementUnit = shoppingItem.MeasurementUnit ; 
+      ExistingShoppingItem.IsPurchased = shoppingItem.IsPurchased ; 
+      ExistingShoppingItem.FoodType = shoppingItem.FoodType ; 
+      // ExistingShoppingItem.ShoppingListId = shoppingItem.ShoppingListId ; 
 
       await _context.SaveChangesAsync();
 
-      return shoppingItemModel;
+      return ExistingShoppingItem;
     }
 
 
     public async Task<ShoppingItem?> DeleteAsync(int id)
     {
-            var ShoppingItemModel = await _context.ShoppingItems.FirstOrDefaultAsync (x => x.Id == id); 
+      var ShoppingItemModel = await _context.ShoppingItems.FirstOrDefaultAsync (x => x.Id == id); 
 
-          if (ShoppingItemModel == null)
-            {
-              return null;
-            }
+      if (ShoppingItemModel == null) return null;
 
       _context.ShoppingItems.Remove(ShoppingItemModel); 
           
@@ -81,5 +83,12 @@ namespace api.Repository
 
       return ShoppingItemModel;
     }
+
+    public Task<bool> ListExist(int id)
+    {
+      return _context.ShoppingLists.AnyAsync(l => l.Id == id);
+    }
+
+
   }
 }
