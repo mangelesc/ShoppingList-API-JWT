@@ -37,7 +37,7 @@ namespace api.Controllers
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
           var shoppingList = await _shoppingListRepository.GetByIdAsync(id);
@@ -60,7 +60,7 @@ namespace api.Controllers
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateShoppingListRequestDto shoppingListDto){
 
           var shoppingListModel = await _shoppingListRepository.UpdateAsync(id, shoppingListDto); 
@@ -73,7 +73,7 @@ namespace api.Controllers
 
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> Delete ([FromRoute] int id){
 
           var shoppingListModel = await _shoppingListRepository.DeleteAsync(id); 

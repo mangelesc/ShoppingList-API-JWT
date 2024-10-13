@@ -12,7 +12,7 @@ namespace api.Dtos.ShoppingItem
         public string Name { get; set; } = string.Empty; 
         public decimal Quantity { get; set; }
         public Unit MeasurementUnit { get; set; }
-        public bool IsPurchased { get; set; }
+        public bool IsPurchased { get; set; } 
         public FoodType FoodType { get; set; }
 
         // Foreign Key

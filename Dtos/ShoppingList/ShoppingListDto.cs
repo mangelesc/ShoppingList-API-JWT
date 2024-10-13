@@ -11,7 +11,7 @@ namespace api.Dtos.ShoppingList
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;   
-        public bool IsPurchased { get; set; }
+        public bool IsPurchased { get; set; }  = false; 
         public DateTime CreatedOn { get; set; } = DateTime.Now;
         public required List<ShoppingItemDto> Items { get; set; }
 

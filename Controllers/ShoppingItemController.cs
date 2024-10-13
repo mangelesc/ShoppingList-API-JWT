@@ -37,7 +37,7 @@ namespace api.Controllers
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
           var shoppingItem = await _shoppingItemRepository.GetByIdAsync(id);
@@ -48,7 +48,7 @@ namespace api.Controllers
         }
 
 
-        [HttpPost("{listId}")]
+        [HttpPost("{listId:int}")]
         public async Task<IActionResult> Create([FromRoute] int listId, [FromBody] CreateShoppingItemRequestDto ShoppingItemDto){
 
           if (!await _shoppingListRepository.ShoppingListExists(listId)) return BadRequest("Shopping List does not exist");
@@ -62,7 +62,7 @@ namespace api.Controllers
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateShoppingItemRequestDto shoppingItemDto){
 
           var shoppingItemModel = await _shoppingItemRepository.UpdateAsync(id, shoppingItemDto); 
@@ -75,7 +75,7 @@ namespace api.Controllers
 
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> Delete ([FromRoute] int id){
 
           var shoppingItemModel = await _shoppingItemRepository.DeleteAsync(id); 

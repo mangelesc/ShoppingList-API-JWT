@@ -8,34 +8,35 @@ namespace api.Models
 {
 
     public enum Unit
-      {
-          Units,
-          Grams,   
-          Kilograms, 
-          Liters
-      }
+    {
+        Units = 0,
+        Grams = 1,
+        Kilograms = 2,
+        Liters = 3
+    }
 
 
     public enum FoodType
     {
-        Dairy,            // 0 Lácteo
-        Grains,           // 1 Grano
-        Meat,             // 2 Carnes
-        Seafood,          // 3 Mariscos/Pescado
-        Vegetables,       // 4 Verduras
-        Fruits,           // 5 Frutas
-        Beverages,        // 6 Bebidas
-        Snacks,           // 7 Snacks
-        Condiments,       // 8 Condimentos
-        Frozen,           // 9 Congelados
-        Canned,           // 10 Enlatados
-        Bakery,           // 12 Panadería
-        ReadyToEat,       // 13 Listo para comer
-        PersonalCare,     // 15 Cuidado personal (geles, desodorantes, etc.)
-        CleaningProducts, // 16 Productos de limpieza (fregasuelos, detergentes, etc.)
-        Technology,        // 17 Tecnología (gadgets, dispositivos electrónicos, etc.)
-        Miscellaneous    // 18 Misceláneos
+        Dairy = 0,
+        Grains = 1,
+        Meat = 2,
+        Seafood = 3,
+        Vegetables = 4,
+        Fruits = 5,
+        Beverages = 6,
+        Snacks = 7,
+        Condiments = 8,
+        Frozen = 9,
+        Canned = 10,
+        Bakery = 12,
+        ReadyToEat = 13,
+        PersonalCare = 15,
+        CleaningProducts = 16,
+        Technology = 17,
+        Miscellaneous = 18
     }
+    
     public class ShoppingItem
     {
         public int Id { get; set; }
@@ -44,10 +45,11 @@ namespace api.Models
         [Column(TypeName = "decimal(10,3)")]
         public decimal Quantity { get; set; }
         public Unit MeasurementUnit { get; set; }
-        public bool IsPurchased { get; set; }
+        public bool IsPurchased { get; set; }  = false; 
         public FoodType FoodType { get; set; }
 
         // Foreign Key
+        [ForeignKey("ShoppingListId")]
         public int? ShoppingListId { get; set; }
 
         // Navigation property
