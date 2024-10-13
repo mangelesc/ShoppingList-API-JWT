@@ -38,60 +38,59 @@ namespace api.Repository
                                     .AsQueryable();
 
         // Filtro Name 
-        if (!string.IsNullOrWhiteSpace(query.Name)) {
+        if (!string.IsNullOrWhiteSpace(query.Name)) 
+        {
           shoppingLists = shoppingLists.Where( l => l.Name.Contains(query.Name)); 
         }
 
         // Filtro IsPurchase 
-        if (query.IsPurchased.HasValue) {
-            shoppingLists = shoppingLists.Where(l => l.IsPurchased == query.IsPurchased.Value);
+        if (query.IsPurchased.HasValue) 
+        {
+          shoppingLists = shoppingLists.Where(l => l.IsPurchased == query.IsPurchased.Value);
         }
 
         // Filtro Date 
-        if (query.CreatedOn.HasValue) {
-            if (query.DateTimeFilterBefore) {
-                shoppingLists = shoppingLists.Where(l => l.CreatedOn.Date < query.CreatedOn.Value.Date);
-            }
-            if (query.DateTimeFilterAfter) {
-                shoppingLists = shoppingLists.Where(l => l.CreatedOn.Date > query.CreatedOn.Value.Date);
-            }
-            if (!query.DateTimeFilterBefore && !query.DateTimeFilterAfter)
-            {
-                shoppingLists = shoppingLists.Where(l => l.CreatedOn.Date == query.CreatedOn.Value.Date);
-            }
+        if (query.CreatedOn.HasValue) 
+        {
+          if (query.DateTimeFilterBefore) 
+          {
+            shoppingLists = shoppingLists.Where(l => l.CreatedOn.Date < query.CreatedOn.Value.Date);
+          }
+
+          if (query.DateTimeFilterAfter) 
+          {
+            shoppingLists = shoppingLists.Where(l => l.CreatedOn.Date > query.CreatedOn.Value.Date);
+          }
+
+          if (!query.DateTimeFilterBefore && !query.DateTimeFilterAfter) 
+          {
+            shoppingLists = shoppingLists.Where(l => l.CreatedOn.Date == query.CreatedOn.Value.Date);
+          }
         }
 
-        return await shoppingLists.ToListAsync();
+        // Sorting 
+        if (!string.IsNullOrWhiteSpace(query.SortBy)) 
+        {
+          if(query.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+          {
+            shoppingLists = query.IsDescending ? shoppingLists.OrderByDescending(l => l.Name) : shoppingLists.OrderBy(l => l.Name); 
+          }
+
+          if(query.SortBy.Equals("CreatedOn", StringComparison.OrdinalIgnoreCase))
+          {
+            shoppingLists = query.IsDescending ? shoppingLists.OrderByDescending(l => l.CreatedOn) : shoppingLists.OrderBy(l => l.CreatedOn); 
+          }
+        }
+
+        // Pagination
+        var skipNumber = (query.PageNumber - 1 ) * query.PageSize; 
+
+
+        return await shoppingLists
+                      .Skip(skipNumber) // Pagination
+                      .Take(query.PageSize) // Pagination
+                      .ToListAsync();
       }
-
-
-    // public async Task<List<ShoppingList>> GetAllAsync(QueryObject query)
-    // {
-    //   // return await _context.ShoppingLists
-    //   // // include to get the comments
-    //   //   .Include(c => c.Comments)
-    //   //   .ToListAsync();
-
-    //   // Console.WriteLine("Param " + query.CompanyName + query.Symbol);
-
-    //   var ShoppingLists = _context.ShoppingLists
-    //     // .Include(c => c.Comments)
-    //     .AsQueryable();
-
-    //   if (!string.IsNullOrWhiteSpace(query.CompanyName))
-    //   {
-    //     ShoppingLists = ShoppingLists.Where(s => s.CompanyName.Contains(query.CompanyName));
-    //   }
-
-    //   if (!string.IsNullOrWhiteSpace(query.Symbol))
-    //   {
-    //     ShoppingLists = ShoppingLists.Where(s => s.Symbol.Contains(query.Symbol));
-    //   }
-
-    //   return await ShoppingLists.ToListAsync();
-
-    // }
-
 
     public async Task<ShoppingList?> GetByIdAsync(int id)
     {
