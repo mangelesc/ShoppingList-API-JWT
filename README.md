@@ -15,25 +15,35 @@ La **API de Lista de Compras** es un servicio web RESTful desarrollado en **ASP.
 - **Gestión de Listas de Compras**: Crear, leer, actualizar y eliminar listas de compras.
 - **Gestión de Artículos**: Crear, leer, actualizar y eliminar artículos dentro de las listas de compras.
 - **Validación de Datos**: Asegura que los datos ingresados cumplen con los criterios establecidos.
+- **DTOs (Data Transfer Objects)**: Se utilizan para transferir datos entre la API y los clientes, garantizando una estructura clara y evitando la exposición directa de las entidades de la base de datos.
+- **Mappers**: Se implementan para transformar entre entidades y DTOs, facilitando la conversión de datos y asegurando que la lógica de negocio permanezca separada de la lógica de presentación.
 - **Documentación Interactiva**: Uso de Swagger para probar la API de manera sencilla e intuitiva.
 
 ## Endpoints
 
-**Shopping Lists - Listas de Compras**
+### **Shopping Lists - Listas de Compras**
 
-- GET /api/shoppinglists : Obtiene todas las listas de compras.
-- GET /api/shoppinglists/{id} : Obtiene una lista de compras específica por ID.
-- POST /api/shoppinglists : Crea una nueva lista de compras.
-- PUT /api/shoppinglists/{id} : Actualiza una lista de compras existente.
-- DELETE /api/shoppinglists/{id} : Elimina una lista de compras.
+- **GET /api/shoppingList** : Obtiene todas las listas de compras.
+- **GET /api/shoppingList/{id}** : Obtiene una lista de compras específica por ID.
+- **POST /api/shoppingList** : Crea una nueva lista de compras.
+- **PUT /api/shoppingList/{id}** : Actualiza una lista de compras existente.
+- **DELETE /api/shoppingList/{id}** : Elimina una lista de compras.
 
-**Shopping Items - Artículos**
+### **Shopping Items - Artículos**
 
-- GET /api/shoppinglists/{shoppingListId}/items : Obtiene todos los artículos de una lista de compras específica.
-- GET /api/shoppinglists/{shoppingListId}/items/{id} : Obtiene un artículo específico por ID.
-- POST /api/shoppinglists/{shoppingListId}/items : Crea un nuevo artículo en una lista de compras.
-- PUT /api/shoppinglists/{shoppingListId}/items/{id} : Actualiza un artículo existente.
-- DELETE /api/shoppinglists/{shoppingListId}/items/{id} : Elimina un artículo de una lista de compras.
+- **GET /api/shoppingItem** : Obtiene todos los artículos de compra.
+- **GET /api/shoppingItem/{id}** : Obtiene un artículo específico por ID.
+- **POST /api/shoppingItem/{listId}** : Crea un nuevo artículo en una lista de compras.
+- **PUT /api/shoppingItem/{id}** : Actualiza un artículo existente.
+- **DELETE /api/shoppingItem/{id}** : Elimina un artículo de una lista de compras.
+
+### **Unit Types - Tipos de Medida**
+
+- **GET /api/shoppingItem/measurementUnit** : Obtiene todos los tipos de medida disponibles.
+
+### **Food Types - Tipos de Alimento**
+
+- **GET /api/shoppingItem/foodTypes** : Obtiene todos los tipos de alimentos disponibles.
 
 ## Instalación
 
