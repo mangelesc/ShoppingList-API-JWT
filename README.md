@@ -23,27 +23,57 @@ La **API de Lista de Compras** es un servicio web RESTful desarrollado en **ASP.
 
 ### **Shopping Lists - Listas de Compras**
 
-- **GET /api/shoppingList** : Obtiene todas las listas de compras.
-- **GET /api/shoppingList/{id}** : Obtiene una lista de compras específica por ID.
-- **POST /api/shoppingList** : Crea una nueva lista de compras.
-- **PUT /api/shoppingList/{id}** : Actualiza una lista de compras existente.
-- **DELETE /api/shoppingList/{id}** : Elimina una lista de compras.
+| Método HTTP | Endpoint                 | Descripción                                     |
+| ----------- | ------------------------ | ----------------------------------------------- |
+| `GET`       | `/api/shoppingList`      | Obtiene todas las listas de compras.            |
+| `GET`       | `/api/shoppingList/{id}` | Obtiene una lista de compras específica por ID. |
+| `POST`      | `/api/shoppingList`      | Crea una nueva lista de compras.                |
+| `PUT`       | `/api/shoppingList/{id}` | Actualiza una lista de compras existente.       |
+| `DELETE`    | `/api/shoppingList/{id}` | Elimina una lista de compras.                   |
+
+---
+
+**Parámetros para `GET /api/shoppingList`**
+
+| Nombre                 | Descripción                                      | Tipo                 | Ejemplo                           |
+| ---------------------- | ------------------------------------------------ | -------------------- | --------------------------------- |
+| `Name`                 | Filtra las listas de compras por nombre.         | `string`             | `?Name=Lista1`                    |
+| `IsPurchased`          | Filtra por estado de compra.                     | `boolean`            | `?IsPurchased=true`               |
+| `CreatedOn`            | Filtra por la fecha de creación.                 | `string($date-time)` | `?CreatedOn=2024-10-01T00:00:00Z` |
+| `DateTimeFilterBefore` | Filtra por fechas anteriores a `CreatedOn`       | `boolean`            | `?DateTimeFilterBefore=true`      |
+| `DateTimeFilterAfter`  | Filtra por fechas posteriores a `CreatedOn`      | `boolean`            | `?DateTimeFilterAfter=true`       |
+| `SortBy`               | Ordena los resultados por el campo especificado. | `string`             | `?SortBy=Name`                    |
+| `IsDescending`         | Indica si el orden debe ser descendente.         | `boolean`            | `?IsDescending=true`              |
+| `PageNumber`           | Número de la página a recuperar.                 | `integer($int32)`    | `?PageNumber=2`                   |
+| `PageSize`             | Número de elementos por página.                  | `integer($int32)`    | `?PageSize=10`                    |
+
+---
+
+**Ejemplo de Solicitud**
+
+```http
+GET /api/shoppingList?Name=Lista1&IsPurchased=true&CreatedOn=2024-10-01&DateTimeFilterBefore=true&SortBy=Name&IsDescending=true&PageNumber=2&PageSize=10
+```
 
 ### **Shopping Items - Artículos**
 
-- **GET /api/shoppingItem** : Obtiene todos los artículos de compra.
-- **GET /api/shoppingItem/{id}** : Obtiene un artículo específico por ID.
-- **POST /api/shoppingItem/{listId}** : Crea un nuevo artículo en una lista de compras.
-- **PUT /api/shoppingItem/{id}** : Actualiza un artículo existente.
-- **DELETE /api/shoppingItem/{id}** : Elimina un artículo de una lista de compras.
+| Método HTTP | Endpoint                     | Descripción                                     |
+| ----------- | ---------------------------- | ----------------------------------------------- |
+| `GET`       | `/api/shoppingItem`          | Obtiene todos los artículos de compra.          |
+| `GET`       | `/api/shoppingItem/{id}`     | Obtiene un artículo específico por ID.          |
+| `POST`      | `/api/shoppingItem/{listId}` | Crea un nuevo artículo en una lista de compras. |
+| `PUT`       | `/api/shoppingItem/{id}`     | Actualiza un artículo existente.                |
+| `DELETE`    | `/api/shoppingItem/{id}`     | Elimina un artículo de una lista de compras.    |
 
-### **Unit Types - Tipos de Medida**
+---
 
-- **GET /api/shoppingItem/measurementUnit** : Obtiene todos los tipos de medida disponibles.
+### **Unit Types(enum) - Tipos de Medida**
 
-### **Food Types - Tipos de Alimento**
+| Método HTTP | Endpoint                      | Descripción                                       |
+| ----------- | ----------------------------- | ------------------------------------------------- |
+| `GET`       | `/api/shoppingItem/foodTypes` | Obtiene todos los tipos de alimentos disponibles. |
 
-- **GET /api/shoppingItem/foodTypes** : Obtiene todos los tipos de alimentos disponibles.
+---
 
 ## Instalación
 
