@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.ShoppingList;
+using api.Helpers;
 using api.Interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -24,13 +25,44 @@ namespace api.Repository
     // ----
 
 
-    public async Task<List<ShoppingList>> GetAllAsync()
+    public async Task<List<ShoppingList>> GetAllAsync(QueryObject query)
     {
-      return await _context.ShoppingLists
-        // include to get the items
-        .Include(i => i.Items)
-        .ToListAsync();
-    }
+      // return await _context.ShoppingLists
+      //   // include to get the items
+      //   .Include(i => i.Items)
+      //   .ToListAsync();
+
+        var shoppingLists = _context.ShoppingLists
+                                    // include to get the items
+                                    .Include(i => i.Items)
+                                    .AsQueryable();
+
+        // Filtro Name 
+        if (!string.IsNullOrWhiteSpace(query.Name)) {
+          shoppingLists = shoppingLists.Where( l => l.Name.Contains(query.Name)); 
+        }
+
+        // Filtro IsPurchase 
+        if (query.IsPurchased.HasValue) {
+            shoppingLists = shoppingLists.Where(l => l.IsPurchased == query.IsPurchased.Value);
+        }
+
+        // Filtro Date 
+        if (query.CreatedOn.HasValue) {
+            if (query.DateTimeFilterBefore) {
+                shoppingLists = shoppingLists.Where(l => l.CreatedOn.Date < query.CreatedOn.Value.Date);
+            }
+            if (query.DateTimeFilterAfter) {
+                shoppingLists = shoppingLists.Where(l => l.CreatedOn.Date > query.CreatedOn.Value.Date);
+            }
+            if (!query.DateTimeFilterBefore && !query.DateTimeFilterAfter)
+            {
+                shoppingLists = shoppingLists.Where(l => l.CreatedOn.Date == query.CreatedOn.Value.Date);
+            }
+        }
+
+        return await shoppingLists.ToListAsync();
+      }
 
 
     // public async Task<List<ShoppingList>> GetAllAsync(QueryObject query)

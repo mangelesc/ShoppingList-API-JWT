@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.ShoppingList;
+using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
@@ -26,13 +27,12 @@ namespace api.Controllers
 
         [HttpGet]
         // public IActionResult GetAll()
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
           
           if (!ModelState.IsValid) return BadRequest(ModelState);
           
-          // var shoppingLists = _context.ShoppingLists.ToList()
-          var shoppingLists = await _shoppingListRepository.GetAllAsync();
+          var shoppingLists = await _shoppingListRepository.GetAllAsync(query);
 
           var shoppingListDto = shoppingLists.Select(s => s.ToShoppingListDto());
 
