@@ -20,18 +20,20 @@ La **API de Lista de Compras** es un servicio web RESTful desarrollado en **ASP.
 ## Endpoints
 
 **Shopping Lists - Listas de Compras**
-GET /api/shoppinglists: Obtiene todas las listas de compras.
-GET /api/shoppinglists/{id}: Obtiene una lista de compras específica por ID.
-POST /api/shoppinglists: Crea una nueva lista de compras.
-PUT /api/shoppinglists/{id}: Actualiza una lista de compras existente.
-DELETE /api/shoppinglists/{id}: Elimina una lista de compras.
+
+- GET /api/shoppinglists : Obtiene todas las listas de compras.
+- GET /api/shoppinglists/{id} : Obtiene una lista de compras específica por ID.
+- POST /api/shoppinglists : Crea una nueva lista de compras.
+- PUT /api/shoppinglists/{id} : Actualiza una lista de compras existente.
+- DELETE /api/shoppinglists/{id} : Elimina una lista de compras.
 
 **Shopping Items - Artículos**
-GET /api/shoppinglists/{shoppingListId}/items: Obtiene todos los artículos de una lista de compras específica.
-GET /api/shoppinglists/{shoppingListId}/items/{id}: Obtiene un artículo específico por ID.
-POST /api/shoppinglists/{shoppingListId}/items: Crea un nuevo artículo en una lista de compras.
-PUT /api/shoppinglists/{shoppingListId}/items/{id}: Actualiza un artículo existente.
-DELETE /api/shoppinglists/{shoppingListId}/items/{id}: Elimina un artículo de una lista de compras.
+
+- GET /api/shoppinglists/{shoppingListId}/items : Obtiene todos los artículos de una lista de compras específica.
+- GET /api/shoppinglists/{shoppingListId}/items/{id} : Obtiene un artículo específico por ID.
+- POST /api/shoppinglists/{shoppingListId}/items : Crea un nuevo artículo en una lista de compras.
+- PUT /api/shoppinglists/{shoppingListId}/items/{id} : Actualiza un artículo existente.
+- DELETE /api/shoppinglists/{shoppingListId}/items/{id} : Elimina un artículo de una lista de compras.
 
 ## Instalación
 
