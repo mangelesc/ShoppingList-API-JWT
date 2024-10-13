@@ -28,6 +28,9 @@ namespace api.Controllers
         // public IActionResult GetAll()
         public async Task<IActionResult> GetAll()
         {
+          
+          if (!ModelState.IsValid) return BadRequest(ModelState);
+          
           // var shoppingLists = _context.ShoppingLists.ToList()
           var shoppingLists = await _shoppingListRepository.GetAllAsync();
 
@@ -40,6 +43,8 @@ namespace api.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
+          if (!ModelState.IsValid) return BadRequest(ModelState);
+          
           var shoppingList = await _shoppingListRepository.GetByIdAsync(id);
 
           if (shoppingList == null) return NotFound();
@@ -51,6 +56,8 @@ namespace api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateShoppingListRequestDto ShoppingListDto){
 
+          if (!ModelState.IsValid) return BadRequest(ModelState);
+          
           var shoppingListModel = ShoppingListDto.ToShoppingListFromCreateDto(); 
 
           await _shoppingListRepository.CreateAsync(shoppingListModel);
@@ -63,6 +70,8 @@ namespace api.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateShoppingListRequestDto shoppingListDto){
 
+          if (!ModelState.IsValid) return BadRequest(ModelState);
+          
           var shoppingListModel = await _shoppingListRepository.UpdateAsync(id, shoppingListDto); 
 
           if (shoppingListModel == null) return NotFound(); 
@@ -76,6 +85,8 @@ namespace api.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> Delete ([FromRoute] int id){
 
+          if (!ModelState.IsValid) return BadRequest(ModelState);
+          
           var shoppingListModel = await _shoppingListRepository.DeleteAsync(id); 
 
           if (shoppingListModel == null) return NotFound(); 

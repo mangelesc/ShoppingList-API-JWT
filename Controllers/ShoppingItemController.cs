@@ -28,7 +28,8 @@ namespace api.Controllers
         // public IActionResult GetAll()
         public async Task<IActionResult> GetAll()
         {
-          
+          if (!ModelState.IsValid) return BadRequest(ModelState);
+
           var shoppingItems = await _shoppingItemRepository.GetAllAsync();
 
           var shoppingItemDto = shoppingItems.Select(s => s.ToShoppingItemDto());
@@ -40,6 +41,9 @@ namespace api.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
+
+          if (!ModelState.IsValid) return BadRequest(ModelState);
+
           var shoppingItem = await _shoppingItemRepository.GetByIdAsync(id);
 
           if (shoppingItem == null) return NotFound();
@@ -50,6 +54,8 @@ namespace api.Controllers
 
         [HttpPost("{listId:int}")]
         public async Task<IActionResult> Create([FromRoute] int listId, [FromBody] CreateShoppingItemRequestDto ShoppingItemDto){
+
+          if (!ModelState.IsValid) return BadRequest(ModelState);
 
           if (!await _shoppingListRepository.ShoppingListExists(listId)) return BadRequest("Shopping List does not exist");
           
@@ -65,6 +71,8 @@ namespace api.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateShoppingItemRequestDto shoppingItemDto){
 
+          if (!ModelState.IsValid) return BadRequest(ModelState);
+
           var shoppingItemModel = await _shoppingItemRepository.UpdateAsync(id, shoppingItemDto); 
 
           if (shoppingItemModel == null) return NotFound("Shopping Item not found"); 
@@ -77,6 +85,8 @@ namespace api.Controllers
         [HttpDelete]
         [Route("{id:int}")]
         public async Task<IActionResult> Delete ([FromRoute] int id){
+
+          if (!ModelState.IsValid) return BadRequest(ModelState);
 
           var shoppingItemModel = await _shoppingItemRepository.DeleteAsync(id); 
 
