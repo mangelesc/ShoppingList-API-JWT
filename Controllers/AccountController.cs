@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using api.Dtos.Account;
+using api.Interfaces;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,13 @@ namespace api.Controllers
     {
 
         private readonly UserManager<AppUser> _userManager;
+        private readonly ITokenService _tokenService;
 
-        public AccountController(UserManager<AppUser> UserManager)
+
+        public AccountController(UserManager<AppUser> UserManager, ITokenService tokenService)
         {
           _userManager = UserManager;
+          _tokenService = tokenService;
         }
 
         [HttpPost("Register")]
@@ -44,7 +48,14 @@ namespace api.Controllers
 
               if(roleResult.Succeeded)
               {
-                return Ok("User created"); 
+                return Ok(
+                  new NewUserDto
+                  {
+                    UserName = appUser.UserName,
+                    Email = appUser.Email,
+                    Token = _tokenService.CreateToken(appUser)
+                  }
+                ); 
               } 
               
               else 
