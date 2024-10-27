@@ -27,7 +27,7 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        // [Authorize]
+        [Authorize]
         // public IActionResult GetAll()
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
@@ -43,6 +43,7 @@ namespace api.Controllers
 
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
           if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -56,6 +57,7 @@ namespace api.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateShoppingListRequestDto ShoppingListDto){
 
           if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -69,6 +71,7 @@ namespace api.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateShoppingListRequestDto shoppingListDto){
 
@@ -84,6 +87,7 @@ namespace api.Controllers
 
 
         [HttpDelete]
+        [Authorize]
         [Route("{id:int}")]
         public async Task<IActionResult> Delete ([FromRoute] int id){
 

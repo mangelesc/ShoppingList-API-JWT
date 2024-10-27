@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Dtos.ShoppingItem;
 using api.Interfaces;
 using api.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -12,6 +13,7 @@ namespace api.Controllers
 
     [Route("api/shoppingItem")]
     [ApiController]
+    
     public class ShoppingItemController : ControllerBase
     {
         private readonly IShoppingItemRepository _shoppingItemRepository;
@@ -25,6 +27,7 @@ namespace api.Controllers
 
 
         [HttpGet]
+        [Authorize]
         // public IActionResult GetAll()
         public async Task<IActionResult> GetAll()
         {
@@ -39,6 +42,7 @@ namespace api.Controllers
 
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
 
@@ -53,6 +57,7 @@ namespace api.Controllers
 
 
         [HttpPost("{listId:int}")]
+        [Authorize]
         public async Task<IActionResult> Create([FromRoute] int listId, [FromBody] CreateShoppingItemRequestDto ShoppingItemDto){
 
           if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -69,6 +74,7 @@ namespace api.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateShoppingItemRequestDto shoppingItemDto){
 
           if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -84,6 +90,7 @@ namespace api.Controllers
 
         [HttpDelete]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> Delete ([FromRoute] int id){
 
           if (!ModelState.IsValid) return BadRequest(ModelState);

@@ -13,6 +13,7 @@ namespace api.Controllers
     public class EnumController: ControllerBase
     {
         [HttpGet("measurementUnit")]
+        
         public IActionResult GetUnits()
         {
             var enumValues = Enum.GetValues(typeof(Unit))
